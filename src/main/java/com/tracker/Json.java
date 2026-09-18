@@ -142,7 +142,6 @@ public class Json {
         for (Task t : tasks) {
             if (t.getId() == taskId) {
                 t.setStatus("Complete");
-                t.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 found = true;
                 break;
             }

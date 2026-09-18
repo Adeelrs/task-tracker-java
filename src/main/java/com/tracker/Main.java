@@ -41,6 +41,8 @@ public class Main {
                         System.out.println("Press Enter to continue");
                         scanner.nextLine();
                     }
+                    System.out.println("\n Press enter to continue");
+                    scanner.nextLine();
                 break;
                 case "2": // Add task
                     System.out.print("Enter Task description: ");
@@ -76,7 +78,7 @@ public class Main {
                     {
                         try{
                             int updateID = Integer.parseInt(scanner.nextLine());
-                            Json.UpdateStatus(updateID);
+                            Json.updateTaskStatus(updateID);
                             validUpdateId = true;
                         }catch(NumberFormatException e){ System.out.println("Invalid Input format please choose a positive number and try again.");}
                         System.out.println("Task Status updated successfully");
