@@ -78,7 +78,7 @@ public class Main {
                     {
                         try{
                             int updateID = Integer.parseInt(scanner.nextLine());
-                            Json.updateTaskStatus(updateID);
+                            Json.UpdateStatus(updateID);
                             validUpdateId = true;
                         }catch(NumberFormatException e){ System.out.println("Invalid Input format please choose a positive number and try again.");}
                         System.out.println("Task Status updated successfully");
