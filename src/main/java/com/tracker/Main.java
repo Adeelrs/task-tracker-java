@@ -1,6 +1,5 @@
 package main.java.com.tracker;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,10 +37,8 @@ public class Main {
                         {
                             System.out.println("["+ t.getId()+"] ["+t.getDescription()+"] ["+ t.getStatus()+"]");
                         }
-                        System.out.println("Press Enter to continue");
-                        scanner.nextLine();
                     }
-                    System.out.println("\n Press enter to continue");
+                    System.out.println("Press enter to continue");
                     scanner.nextLine();
                 break;
                 case "2": // Add task
@@ -61,30 +58,33 @@ public class Main {
 
                     try {
                         int delId = Integer.parseInt(scanner.nextLine());
-                        Json.deleteTask(delId);
+                        if(Json.deleteTask(delId)){
+                            System.out.println("Task deleted successfully");
+                        }else{   System.out.println("Task with the id " + delId + " not found");   }
+                        System.out.println("Press enter to continue");
+                        scanner.nextLine();
                         validDelId = true;
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid Input format please choose a positive number and try again.");
+                        System.out.println("Press enter to continue");
+                        scanner.nextLine();
                     }
                 }
-                    
-                System.out.println("Task deleted successfully, Press enter to continue");
-                scanner.nextLine();
                 break;
                 case "4": // Mark Task done at given Id
-                    System.out.print("Select ID of the task you want to mark as done");
+                    System.out.print("Select ID of the task you want to mark as done: ");
                     boolean validUpdateId = false;
                     while(!validUpdateId)
                     {
                         try{
                             int updateID = Integer.parseInt(scanner.nextLine());
-                            Json.UpdateStatus(updateID);
+                            if(Json.UpdateStatus(updateID)){
+                                System.out.println("Task Status updated successfully");
+                            }else{  System.out.println("task not found");   }
+                            System.out.println("Press enter to continue");
+                            scanner.nextLine();
                             validUpdateId = true;
                         }catch(NumberFormatException e){ System.out.println("Invalid Input format please choose a positive number and try again.");}
-                        System.out.println("Task Status updated successfully");
-                        System.out.println("Press enter to continue");
-                        scanner.nextLine();
-
                     }
                     
                 break;
@@ -95,7 +95,8 @@ public class Main {
             
                 default:
                     System.out.println("Invalid input, please input a number 1 - 5");
-                    System.out.println("\n Press Enter to continue");
+                    System.out.println("Press Enter to continue");
+                    scanner.nextLine();
                     break;
             }
         }

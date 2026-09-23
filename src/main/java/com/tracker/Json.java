@@ -89,64 +89,57 @@ public class Json {
     }
 
     // 3. Delete Task & Re-index IDs (1, 2, 3...)
-    public static void deleteTask(int taskId) {
+    public static boolean deleteTask(int taskId) {
+
         Path path = Paths.get(FILE_NAME);
+        List<Task> tasks = fetchFile();
+        boolean deleted = false;
+
         if (!Files.exists(path)) {
             System.out.println("No List Found");
-            return;
+            return deleted;
         }
-
-        List<Task> tasks = fetchFile();
-        boolean found = false;
 
         for (Task t : tasks) {
             if (t.getId() == taskId) {
-                found = true;
+                tasks.removeIf(task -> task.getId() == taskId);
+
+                // Re-index remaining tasks sequentially
+                List<Task> reindexedTasks = new ArrayList<>();
+                for (int i = 0; i < tasks.size(); i++) {
+                    Task a = tasks.get(i);
+                    reindexedTasks.add(new Task(i + 1, a.getDescription(), a.getStatus()));
+                }
+                saveToFile(reindexedTasks);
+                deleted = true;
                 break;
             }
         }
-
-        if (!found) {
-            System.out.println("Task with the id " + taskId + " not found");
-            return;
-        }
-
-        tasks.removeIf(t -> t.getId() == taskId);
-
-        // Re-index remaining tasks sequentially
-        List<Task> reindexedTasks = new ArrayList<>();
-        for (int i = 0; i < tasks.size(); i++) {
-            Task t = tasks.get(i);
-            reindexedTasks.add(new Task(i + 1, t.getDescription(), t.getStatus()));
-        }
-
-        saveToFile(reindexedTasks);
+        
+        return deleted;
     }
 
     // 4. Update Task Status to Done
-    public static void UpdateStatus(int taskId) {
+    public static boolean UpdateStatus(int taskId) {
         Path path = Paths.get(FILE_NAME);
+        boolean updated = false;
+
+
         if (!Files.exists(path)) {
             System.out.println("Task file not found");
-            return;
+            return updated;
         }
 
         List<Task> tasks = fetchFile();
-        boolean found = false;
 
         for (Task t : tasks) {
             if (t.getId() == taskId) {
                 t.setStatus("Done");
-                found = true;
+                saveToFile(tasks);
+                updated = true;
                 break;
             }
         }
-
-        if (!found) {
-            System.out.println("task not found");
-            return;
-        }
-
-        saveToFile(tasks);
+        return updated;
     }
 }
